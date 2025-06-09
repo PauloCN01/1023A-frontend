@@ -1,15 +1,14 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 //import './index.css'
-import App from './App.tsx'
-import Header from './Header.tsx'
-import Body from './Body.tsx'
-import Footer from './Footer.tsx'
+
+import Container from './Container.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <Header />
-    <Body />
-    <Footer />
+    <Container />
+    <Container />
+    <Container />
   </StrictMode>,
 )
+
