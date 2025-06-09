@@ -1,10 +1,17 @@
-//States
-//Prosp -> informações que você pode passar para um componente
-//Hooks
-
-function Container() {
-    return (
-        <h1>Header</h1>
+interface ContainersProps{
+    nome:string
+}
+function Container(props:ContainersProps) {
+    let contador = 10
+    function mudar(){
+        contador = 20
+    }
+    return(
+    <>
+      <h1>{props.nome}</h1>
+      Valor Contador:{contador}
+      <button onClick={mudar()}></button>
+    </>
     )
 }
 export default Container

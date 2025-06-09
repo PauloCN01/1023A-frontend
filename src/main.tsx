@@ -6,9 +6,9 @@ import Container from './Container.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <Container />
-    <Container />
-    <Container />
+    <Container nome="Header"/>
+    <Container nome="Body"/>
+    <Container nome="Footer"/>
   </StrictMode>,
 )
 
