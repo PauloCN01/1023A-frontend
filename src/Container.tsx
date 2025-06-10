@@ -1,10 +1,15 @@
+import { useState } from "react"
+
+
+
 interface ContainersProps{
     nome:string
 }
 function Container(props:ContainersProps) {
-    let contador = 10
+    const [contador,setContador] = useState(0)
     function mudar(){
-        contador = 20
+        setContador(20)
+        console.log(contador)
     }
     return(
     <>
