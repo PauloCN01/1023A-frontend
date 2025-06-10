@@ -10,7 +10,7 @@ function Container(props:ContainersProps) {
     <>
       <h1>{props.nome}</h1>
       Valor Contador:{contador}
-      <button onClick={mudar()}></button>
+      <button onClick={mudar}>Mudar</button>
     </>
     )
 }
