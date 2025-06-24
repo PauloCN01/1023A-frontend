@@ -1,53 +1,68 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import './Pagina.css'
 interface ProdutosState {
-    id:number,
-    nome:string,
-    preco:number,
-    categoria:string
+    id: number,
+    nome: string,
+    preco: number,
+    categoria: string
 }
 
-function Pagina(){
-    const [id,setId] = useState("")
-    const [nome,setNome] = useState("")
-    const [preco,setPreco] = useState("")
-    const [categoria,setCategoria] = useState("")
-    const [produtos,setProdutos] = useState<ProdutosState[]>([
-        {
-            id:1,
-            nome:"Caderno",
-            preco:20,
-            categoria:"Escolar"
-        }
+function Pagina() {
+    const [id, setId] = useState("")
+    const [nome, setNome] = useState("")
+    const [preco, setPreco] = useState("")
+    const [categoria, setCategoria] = useState("")
+    const [mensagem, setMensagem] = useState("")
+    const [produtos, setProdutos] = useState<ProdutosState[]>([
     ])
-    function TrataCadastro(event:React.FormEvent<HTMLFormElement>){
+    useEffect(() => {
+        const buscaDados = async () => {
+            try {
+                const resultado = await fetch("http://localhost:8000/produtos")
+                if (resultado.status === 200) {
+                    const dados = await resultado.json()
+                    setProdutos(dados)
+                }
+                if (resultado.status === 400) {
+                    const erro = await resultado.json()
+                    setMensagem(erro.mensagem)
+                    // console.log(erro.mensagem)
+                }
+            }
+            catch (erro) {
+                setMensagem("Fetch não funciona")
+            }
+        }
+        buscaDados
+    }, [])
+    function TrataCadastro(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         //Criar um novo produto
-        const novoProduto:ProdutosState = {
-            id:parseInt(id),
-            nome:nome,
-            preco:parseFloat(preco),
-            categoria:categoria
+        const novoProduto: ProdutosState = {
+            id: parseInt(id),
+            nome: nome,
+            preco: parseFloat(preco),
+            categoria: categoria
         }
-        
-        setProdutos([...produtos,novoProduto    ])
+
+        setProdutos([...produtos, novoProduto])
         //Adicionar esse novo produto no vetor/Array de produtos
     }
-    function trataId(event:React.ChangeEvent<HTMLInputElement>){
+    function trataId(event: React.ChangeEvent<HTMLInputElement>) {
         setId(event.target.value)
     }
-    function trataNome(event:React.ChangeEvent<HTMLInputElement>){
+    function trataNome(event: React.ChangeEvent<HTMLInputElement>) {
         setNome(event.target.value)
     }
-    function trataPreco(event:React.ChangeEvent<HTMLInputElement>){
+    function trataPreco(event: React.ChangeEvent<HTMLInputElement>) {
         setPreco(event.target.value)
     }
-    function trataCategoria(event:React.ChangeEvent<HTMLInputElement>){
+    function trataCategoria(event: React.ChangeEvent<HTMLInputElement>) {
         setCategoria(event.target.value)
     }
-    return(
+    return (
         <>
-             <header>
+            <header>
                 <div>Logo</div>
                 <nav>
                     <ul>
@@ -62,11 +77,16 @@ function Pagina(){
                         </li>
                     </ul>
                 </nav>
-             </header>
-             <main>
+            </header>
+            <main>
+                {mensagem&&
+            <div className="mensagem">
+                <p>{mensagem}</p>
+            </div>
+                }
                 <div className="container-listagem">
-                    {produtos.map(produto=>{
-                        return(
+                    {produtos.map(produto => {
+                        return (
                             <div className="produto-container">
                                 <div className="produto-nome">
                                     {produto.nome}
@@ -83,15 +103,15 @@ function Pagina(){
                 </div>
                 <div className="container-cadastro">
                     <form onSubmit={TrataCadastro}>
-                    <input type="text" name="id" id="id" onChange={trataId} placeholder="Id"/>
-                    <input type="text" name="nome" id="nome" onChange={trataNome} placeholder="Nome"/>
-                    <input type="text" name="preco" id="preco" onChange={trataPreco} placeholder="Preço"/>
-                    <input type="text" name="categoria" id="categoria" onChange={trataCategoria} placeholder="Categoria"/>
-                    <input type="submit" value="Cadastrar"/>
+                        <input type="text" name="id" id="id" onChange={trataId} placeholder="Id" />
+                        <input type="text" name="nome" id="nome" onChange={trataNome} placeholder="Nome" />
+                        <input type="text" name="preco" id="preco" onChange={trataPreco} placeholder="Preço" />
+                        <input type="text" name="categoria" id="categoria" onChange={trataCategoria} placeholder="Categoria" />
+                        <input type="submit" value="Cadastrar" />
                     </form>
                 </div>
-             </main>
-             <footer></footer>
+            </main>
+            <footer></footer>
         </>
     )
 }
